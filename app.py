@@ -28,6 +28,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
+# 1. نموذج المستخدمين
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(80), unique=True, nullable=False)
@@ -39,6 +40,18 @@ class User(db.Model):
   dob = db.Column(db.String(50), default="")
   national_id = db.Column(db.String(50), default="")
   bank_account = db.Column(db.String(50), default="")
+
+
+# 2. نموذج قاعدة البيانات لربط وحفظ كل طلبات وخانات الموظف
+class RequestItem(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  category = db.Column(
+      db.String(50), nullable=False
+  )  # complaint, question, survey, talent
+  employee_name = db.Column(db.String(100), nullable=False)
+  title = db.Column(db.String(200), nullable=False)
+  details = db.Column(db.Text, nullable=False)
+  date_submitted = db.Column(db.String(50), nullable=False)
 
 
 with app.app_context():
@@ -93,7 +106,7 @@ BASE_LAYOUT_HR = """
         .dropdown-content a { color: #334155; padding: 12px 16px; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 14px; transition: 0.2s; margin-bottom: 0; }
         .dropdown-content a:hover { background-color: #f1f5f9; color: #4f46e5; }
         .profile-dropdown:hover .dropdown-content { display: block; }
-        .page-card { background: white; border-radius: 14px; padding: 35px 40px; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.03); max-width: 900px; width: 100%; margin: 0 auto; }
+        .page-card { background: white; border-radius: 14px; padding: 35px 40px; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.03); max-width: 1000px; width: 100%; margin: 0 auto; }
         .btn-primary { background: #4f46e5; color: white; border: none; padding: 13px 20px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .btn-primary:hover { background: #4338ca; }
     </style>
@@ -134,7 +147,7 @@ BASE_LAYOUT_HR = """
 </html>
 """
 
-# Employee Layout (With full features requested)
+# Employee Layout
 BASE_LAYOUT_EMPLOYEE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -488,15 +501,39 @@ ALL_EMPLOYEES_CONTENT = """
 </div>
 """
 
-GENERIC_CONTENT = """
+# 3. جدول ديناميكي يعرض الطلبات الحقيقية في كل خانة لـ HR Manager
+HR_REQUESTS_LIST_CONTENT = """
 <div class="page-card">
     <h2 style="color: #1e1b4b; margin-bottom: 15px;">Management Section: {{ path }}</h2>
-    <p style="color: #475569;">Here HR manager can review all submitted employee {{ path.lower() }}, track statuses, and manage records efficiently.</p>
-    <p style="margin-top: 15px; color: #64748b; font-style: italic;">(No active records found yet. Data will appear here as employees submit requests.)</p>
+    <p style="color: #475569; margin-bottom: 20px;">Review all submitted records and requests from employees.</p>
+    
+    {% if requests_list %}
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                <th style="padding: 12px; text-align: left; color: #475569;">Employee</th>
+                <th style="padding: 12px; text-align: left; color: #475569;">Subject / Title</th>
+                <th style="padding: 12px; text-align: left; color: #475569;">Details</th>
+                <th style="padding: 12px; text-align: left; color: #475569;">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in requests_list %}
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 12px; font-weight: 600; color: #1e1b4b;">{{ item.employee_name }}</td>
+                <td style="padding: 12px; font-weight: 600; color: #4f46e5;">{{ item.title }}</td>
+                <td style="padding: 12px; color: #334155;">{{ item.details }}</td>
+                <td style="padding: 12px; color: #64748b; font-size: 13px;">{{ item.date_submitted }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="margin-top: 15px; color: #64748b; font-style: italic;">No active records found yet. Submissions will appear here live when sent by employees.</p>
+    {% endif %}
 </div>
 """
 
-# Employee Dashboard Main Grid (All Requested Feature Cards)
 EMPLOYEE_HOME_CONTENT = """
 <div class="welcome-section" style="margin-bottom: 25px;">
     <h1 style="font-size: 26px; color: #1e1b4b; font-weight: 700;">Welcome back, {{ current_user.name }}! 👋</h1>
@@ -661,7 +698,7 @@ EMPLOYEE_SURVEY_CONTENT = """
 
         <div style="margin-bottom: 25px;">
             <label style="display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 8px;">2. Any suggestions for improving company communication and culture?</label>
-            <textarea name="q2" rows="4" placeholder="Your feedback..." style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
+            <textarea name="q2" rows="4" required placeholder="Your feedback..." style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
         </div>
 
         <button type="submit" class="btn-primary" style="width: 100%;">Submit Survey Response</button>
@@ -885,25 +922,68 @@ def all_employees():
   )
 
 
+# 4. مسارات HR لعرض الجداول الحقيقية المجلوبة من قاعدة البيانات
 @app.route("/hr/complaints")
-@app.route("/hr/surveys")
-@app.route("/hr/questions")
-@app.route("/hr/talents")
-def generic_hr_section():
+def hr_complaints():
   if session.get("role") != "hr":
     return redirect(url_for("home"))
-  endpoint = request.path.split("/")[-1]
-  path_name = endpoint.capitalize()
+  requests_list = RequestItem.query.filter_by(category="complaint").all()
   return render_page(
-      GENERIC_CONTENT,
-      title=path_name,
-      active_page=endpoint,
-      path=path_name,
+      HR_REQUESTS_LIST_CONTENT,
+      title="Employee Complaints",
+      active_page="complaints",
+      path="Complaints",
+      requests_list=requests_list,
       is_hr=True,
   )
 
 
-# Employee Routes (Complete & Full Implementation)
+@app.route("/hr/surveys")
+def hr_surveys():
+  if session.get("role") != "hr":
+    return redirect(url_for("home"))
+  requests_list = RequestItem.query.filter_by(category="survey").all()
+  return render_page(
+      HR_REQUESTS_LIST_CONTENT,
+      title="Employee Surveys",
+      active_page="surveys",
+      path="Surveys & Feedback",
+      requests_list=requests_list,
+      is_hr=True,
+  )
+
+
+@app.route("/hr/questions")
+def hr_questions():
+  if session.get("role") != "hr":
+    return redirect(url_for("home"))
+  requests_list = RequestItem.query.filter_by(category="question").all()
+  return render_page(
+      HR_REQUESTS_LIST_CONTENT,
+      title="Employee Questions",
+      active_page="questions",
+      path="Questions",
+      requests_list=requests_list,
+      is_hr=True,
+  )
+
+
+@app.route("/hr/talents")
+def hr_talents():
+  if session.get("role") != "hr":
+    return redirect(url_for("home"))
+  requests_list = RequestItem.query.filter_by(category="talent").all()
+  return render_page(
+      HR_REQUESTS_LIST_CONTENT,
+      title="Talent & Internship Requests",
+      active_page="talents",
+      path="Talent & Internships",
+      requests_list=requests_list,
+      is_hr=True,
+  )
+
+
+# Employee Routes
 @app.route("/employee-dashboard")
 def employee_dashboard():
   if session.get("role") != "employee":
@@ -951,12 +1031,24 @@ def employee_profile():
   )
 
 
+# 5. حفظ كافة خانات الموظف في قاعدة البيانات عبر db.session.add(...) و db.session.commit()
 @app.route("/employee/complaint", methods=["GET", "POST"])
 def employee_complaint():
   if session.get("role") != "employee":
     return redirect(url_for("home"))
   msg = None
   if request.method == "POST":
+    subject = request.form.get("subject")
+    message = request.form.get("message")
+    new_req = RequestItem(
+        category="complaint",
+        employee_name=session.get("name"),
+        title=subject,
+        details=message,
+        date_submitted=datetime.now().strftime("%Y-%m-%d %H:%M"),
+    )
+    db.session.add(new_req)
+    db.session.commit()
     msg = "Your complaint has been submitted to HR successfully!"
 
   return render_page(
@@ -974,6 +1066,18 @@ def employee_surveys():
     return redirect(url_for("home"))
   msg = None
   if request.method == "POST":
+    q1 = request.form.get("q1")
+    q2 = request.form.get("q2")
+    details = f"Satisfaction Level: {q1} | Feedback: {q2}"
+    new_req = RequestItem(
+        category="survey",
+        employee_name=session.get("name"),
+        title="Satisfaction Survey Response",
+        details=details,
+        date_submitted=datetime.now().strftime("%Y-%m-%d %H:%M"),
+    )
+    db.session.add(new_req)
+    db.session.commit()
     msg = "Thank you! Your survey responses have been submitted."
 
   return render_page(
@@ -991,6 +1095,17 @@ def employee_ask_hr():
     return redirect(url_for("home"))
   msg = None
   if request.method == "POST":
+    topic = request.form.get("topic")
+    question = request.form.get("question")
+    new_req = RequestItem(
+        category="question",
+        employee_name=session.get("name"),
+        title=topic,
+        details=question,
+        date_submitted=datetime.now().strftime("%Y-%m-%d %H:%M"),
+    )
+    db.session.add(new_req)
+    db.session.commit()
     msg = "Your question has been sent to the HR Manager!"
 
   return render_page(
@@ -1008,6 +1123,17 @@ def employee_talents():
     return redirect(url_for("home"))
   msg = None
   if request.method == "POST":
+    req_type = request.form.get("type")
+    details = request.form.get("details")
+    new_req = RequestItem(
+        category="talent",
+        employee_name=session.get("name"),
+        title=req_type,
+        details=details,
+        date_submitted=datetime.now().strftime("%Y-%m-%d %H:%M"),
+    )
+    db.session.add(new_req)
+    db.session.commit()
     msg = "Your Talent & Internship request has been submitted successfully!"
 
   return render_page(
@@ -1025,8 +1151,6 @@ def logout():
   return redirect(url_for("home"))
 
 
-import os
-
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+if __name__ == "__main__":
+  port = int(os.environ.get("PORT", 5000))
+  app.run(host="0.0.0.0", port=port)

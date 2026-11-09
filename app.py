@@ -28,7 +28,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
-# 1. نموذج المستخدمين
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(80), unique=True, nullable=False)
@@ -42,12 +41,9 @@ class User(db.Model):
   bank_account = db.Column(db.String(50), default="")
 
 
-# 2. نموذج قاعدة البيانات لربط وحفظ كل طلبات وخانات الموظف
 class RequestItem(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  category = db.Column(
-      db.String(50), nullable=False
-  )  # complaint, question, survey, talent
+  category = db.Column(db.String(50), nullable=False)
   employee_name = db.Column(db.String(100), nullable=False)
   title = db.Column(db.String(200), nullable=False)
   details = db.Column(db.Text, nullable=False)
@@ -215,86 +211,302 @@ BASE_LAYOUT_EMPLOYEE = """
 </html>
 """
 
+# -------------------------------------------------------------
+# الواجهة الرئيسية المحدّثة لتطابق الصورة بنسبة 100%
+# -------------------------------------------------------------
 LOGIN_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RetainPro - Portal Access</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetainPro - Workplace Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f8fafc; display: flex; height: 100vh; overflow: hidden; }
-        .hero-side { flex: 1.2; background: linear-gradient(135deg, rgba(30, 27, 75, 0.85), rgba(79, 70, 229, 0.75)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px; color: white; position: relative; }
-        .hero-content h1 { font-size: 42px; font-weight: 700; line-height: 1.2; margin-bottom: 15px; }
-        .hero-content p { font-size: 16px; opacity: 0.9; }
-        .logo-area { position: absolute; top: 40px; left: 60px; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; }
-        .form-side { flex: 1; background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.03); z-index: 10; }
-        .form-container { width: 100%; max-width: 380px; }
-        .form-header h2 { font-size: 26px; color: #1e1b4b; font-weight: 700; margin-bottom: 8px; }
-        .form-header p { font-size: 14px; color: #64748b; margin-bottom: 25px; }
-        .role-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-        .role-card { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; background: #fff; text-decoration: none; }
-        .role-card:hover { border-color: #6366f1; background: #f8fafc; }
-        .role-info h4 { font-size: 15px; color: #1e1b4b; font-weight: 600; }
-        .role-info p { font-size: 12px; color: #64748b; margin-top: 2px; }
-        .role-icon { width: 36px; height: 36px; background: #eef2ff; color: #4f46e5; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .input-group { margin-bottom: 16px; }
-        .input-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px; }
-        .input-group input { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; }
-        .btn-primary { width: 100%; padding: 13px; background: #4f46e5; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 5px; }
-        .btn-primary:hover { background: #4338ca; }
-        .back-link { display: inline-block; margin-top: 15px; font-size: 13px; color: #4f46e5; text-decoration: none; font-weight: 600; }
-        .error-box { background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 8px; font-size: 13px; margin-bottom: 15px; text-align: center; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        
+        body {
+            background-color: #0d1117;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .main-card {
+            width: 100%;
+            max-width: 1050px;
+            height: 520px;
+            border-radius: 36px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, rgba(30, 27, 75, 0.85) 0%, rgba(79, 70, 229, 0.4) 60%), 
+                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px 60px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-section {
+            color: #ffffff;
+            max-width: 440px;
+            z-index: 2;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 35px;
+        }
+
+        .brand-header i {
+            font-size: 32px;
+            color: #ffffff;
+        }
+
+        .brand-title {
+            font-size: 26px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            opacity: 0.8;
+            font-weight: 500;
+            display: block;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 14px;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
+        }
+
+        .action-panel {
+            width: 380px;
+            z-index: 2;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .role-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            padding: 18px 20px;
+            border-radius: 18px;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .role-btn:hover {
+            border-color: #4f46e5;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .role-btn-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .role-icon {
+            width: 44px;
+            height: 44px;
+            background: #1e1b4b;
+            color: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .role-details h4 {
+            font-size: 16px;
+            color: #1e1b4b;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .role-details p {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .role-arrow {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .role-btn:hover .role-arrow {
+            background: #4f46e5;
+            color: #ffffff;
+            border-color: #4f46e5;
+        }
+
+        /* Form view styling */
+        .form-view-header h3 {
+            font-size: 22px;
+            color: #1e1b4b;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        
+        .form-view-header p {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #4338ca;
+        }
+
+        .error-msg {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-bottom: 14px;
+        }
     </style>
 </head>
 <body>
-    <div class="hero-side">
-        <div class="logo-area"><span><i class="fa-solid fa-users"></i></span> RetainPro</div>
-        <div class="hero-content">
-            <h1>Your Voice Builds a Better Workplace</h1>
-            <p>Manage your team data, review workflows, and streamline human resources effortlessly.</p>
+
+    <div class="main-card">
+        <div class="brand-section">
+            <div class="brand-header">
+                <i class="fa-solid fa-users-rectangle"></i>
+                <div>
+                    <div class="brand-title">RetainPro</div>
+                    <span class="brand-subtitle">Listen • Improve • Retain</span>
+                </div>
+            </div>
+            
+            <h1 class="hero-title">Your Voice<br>Builds a Better<br>Workplace</h1>
+            <p class="hero-desc">Choose your access type to continue</p>
         </div>
-    </div>
-    <div class="form-side">
-        <div class="form-container">
+
+        <div class="action-panel">
             {% if step == 'select' %}
-                <div class="form-header">
-                    <h2>Welcome to RetainPro</h2>
-                    <p>Choose your access type to continue</p>
-                </div>
-                <div class="role-cards">
-                    <a href="/login-form?role=employee" class="role-card">
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <div class="role-icon"><i class="fa-solid fa-user"></i></div>
-                            <div class="role-info"><h4>Employee</h4><p>Access surveys, view tasks & info</p></div>
+                <a href="/login-form?role=employee" class="role-btn">
+                    <div class="role-btn-left">
+                        <div class="role-icon"><i class="fa-solid fa-user"></i></div>
+                        <div class="role-details">
+                            <h4>Employee</h4>
+                            <p>Access your surveys, submit feedback and more</p>
                         </div>
-                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                    </a>
-                    <a href="/login-form?role=hr" class="role-card">
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <div class="role-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                            <div class="role-info"><h4>HR Manager</h4><p>Manage data and view reports</p></div>
+                    </div>
+                    <div class="role-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/login-form?role=hr" class="role-btn">
+                    <div class="role-btn-left">
+                        <div class="role-icon" style="background: #4f46e5;"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="role-details">
+                            <h4>HR Manager</h4>
+                            <p>Manage data and view reports</p>
                         </div>
-                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                    </a>
-                </div>
+                    </div>
+                    <div class="role-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                </a>
             {% else %}
-                <div class="form-header">
-                    <h2>{{ 'HR Manager' if role == 'hr' else 'Employee' }} Login</h2>
+                <div class="form-view-header">
+                    <h3>{{ 'HR Manager Login' if role == 'hr' else 'Employee Login' }}</h3>
                     <p>Enter your credentials to access your account</p>
                 </div>
-                {% if error %}<div class="error-box">{{ error }}</div>{% endif %}
+                
+                {% if error %}
+                    <div class="error-msg">{{ error }}</div>
+                {% endif %}
+
                 <form method="POST" action="/authenticate">
                     <input type="hidden" name="role" value="{{ role }}">
-                    <div class="input-group"><label>Username / ID</label><input type="text" name="username" placeholder="Enter username" required></div>
-                    <div class="input-group"><label>Password</label><input type="password" name="password" placeholder="••••••••" required></div>
-                    <button type="submit" class="btn-primary">Login</button>
+                    <div class="form-group">
+                        <label>Username / ID</label>
+                        <input type="text" name="username" placeholder="Enter username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Login</button>
                 </form>
-                <a class="back-link" href="/">← Back to role selection</a>
+                <a href="/" style="display: block; text-align: center; font-size: 12px; color: #4f46e5; text-decoration: none; margin-top: 10px; font-weight: 600;">← Back to selection</a>
             {% endif %}
         </div>
     </div>
+
 </body>
 </html>
 """
@@ -501,7 +713,6 @@ ALL_EMPLOYEES_CONTENT = """
 </div>
 """
 
-# 3. جدول ديناميكي يعرض الطلبات الحقيقية في كل خانة لـ HR Manager
 HR_REQUESTS_LIST_CONTENT = """
 <div class="page-card">
     <h2 style="color: #1e1b4b; margin-bottom: 15px;">Management Section: {{ path }}</h2>
@@ -814,7 +1025,6 @@ def authenticate():
   )
 
 
-# HR Routes
 @app.route("/hr-dashboard")
 def hr_dashboard():
   if session.get("role") != "hr":
@@ -922,7 +1132,6 @@ def all_employees():
   )
 
 
-# 4. مسارات HR لعرض الجداول الحقيقية المجلوبة من قاعدة البيانات
 @app.route("/hr/complaints")
 def hr_complaints():
   if session.get("role") != "hr":
@@ -983,7 +1192,6 @@ def hr_talents():
   )
 
 
-# Employee Routes
 @app.route("/employee-dashboard")
 def employee_dashboard():
   if session.get("role") != "employee":
@@ -1031,7 +1239,6 @@ def employee_profile():
   )
 
 
-# 5. حفظ كافة خانات الموظف في قاعدة البيانات عبر db.session.add(...) و db.session.commit()
 @app.route("/employee/complaint", methods=["GET", "POST"])
 def employee_complaint():
   if session.get("role") != "employee":

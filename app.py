@@ -211,302 +211,104 @@ BASE_LAYOUT_EMPLOYEE = """
 </html>
 """
 
-# -------------------------------------------------------------
-# الواجهة الرئيسية المحدّثة لتطابق الصورة بنسبة 100%
-# -------------------------------------------------------------
 LOGIN_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RetainPro - Workplace Portal</title>
+    <title>RetainPro - Portal Access</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-        
         body {
-            background-color: #0d1117;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            height: 100vh; width: 100vw; overflow: hidden; display: flex; align-items: center; justify-content: space-around; padding: 0 6%;
+            background: linear-gradient(90deg, rgba(30, 27, 75, 0.9) 0%, rgba(30, 27, 75, 0.45) 60%, rgba(15, 23, 42, 0.15) 100%), 
+                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80') no-repeat center center/cover;
         }
-
-        .main-card {
-            width: 100%;
-            max-width: 1050px;
-            height: 520px;
-            border-radius: 36px;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(90deg, rgba(30, 27, 75, 0.85) 0%, rgba(79, 70, 229, 0.4) 60%), 
-                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 50px 60px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .brand-section {
-            color: #ffffff;
-            max-width: 440px;
-            z-index: 2;
-        }
-
-        .brand-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 35px;
-        }
-
-        .brand-header i {
-            font-size: 32px;
-            color: #ffffff;
-        }
-
-        .brand-title {
-            font-size: 26px;
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.5px;
-        }
-
-        .brand-subtitle {
-            font-size: 11px;
-            opacity: 0.8;
-            font-weight: 500;
-            display: block;
-            margin-top: 2px;
-            letter-spacing: 0.5px;
-        }
-
-        .hero-title {
-            font-size: 38px;
-            font-weight: 800;
-            line-height: 1.15;
-            margin-bottom: 14px;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-        }
-
-        .hero-desc {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 400;
-        }
-
-        .action-panel {
-            width: 380px;
-            z-index: 2;
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .role-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #ffffff;
-            border: 1.5px solid #e2e8f0;
-            padding: 18px 20px;
-            border-radius: 18px;
-            text-decoration: none;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .role-btn:hover {
-            border-color: #4f46e5;
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .role-btn-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .role-icon {
-            width: 44px;
-            height: 44px;
-            background: #1e1b4b;
-            color: #ffffff;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .role-details h4 {
-            font-size: 16px;
-            color: #1e1b4b;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-
-        .role-details p {
-            font-size: 12px;
-            color: #64748b;
-        }
-
-        .role-arrow {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid #cbd5e1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            font-size: 12px;
-            transition: 0.2s;
-        }
-
-        .role-btn:hover .role-arrow {
-            background: #4f46e5;
-            color: #ffffff;
-            border-color: #4f46e5;
-        }
-
-        /* Form view styling */
-        .form-view-header h3 {
-            font-size: 22px;
-            color: #1e1b4b;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-        
-        .form-view-header p {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 14px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 6px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background: #4f46e5;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-submit:hover {
-            background: #4338ca;
-        }
-
-        .error-msg {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            margin-bottom: 14px;
-        }
+        .brand-container { color: #ffffff; max-width: 520px; z-index: 2; display: flex; flex-direction: column; justify-content: center; align-self: center; }
+        .brand-logo { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; }
+        .brand-logo i { font-size: 42px; color: #ffffff; }
+        .brand-logo-text { font-size: 34px; font-weight: 800; line-height: 1.1; letter-spacing: -0.5px; }
+        .brand-logo-sub { font-size: 13px; opacity: 0.9; font-weight: 500; display: block; margin-top: 3px; letter-spacing: 0.5px; }
+        .hero-title { font-size: 44px; font-weight: 800; line-height: 1.15; margin-bottom: 15px; color: #ffffff; letter-spacing: -0.5px; }
+        .hero-desc { font-size: 16px; color: rgba(255, 255, 255, 0.85); font-weight: 400; }
+        .login-card { width: 420px; background: #ffffff; border-radius: 22px; padding: 32px 28px; box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4); z-index: 2; display: flex; flex-direction: column; gap: 16px; align-self: center; }
+        .role-option { display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1.5px solid #e2e8f0; padding: 16px 18px; border-radius: 16px; text-decoration: none; transition: all 0.2s ease; }
+        .role-option:hover { border-color: #4f46e5; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15); transform: translateY(-2px); }
+        .role-left { display: flex; align-items: center; gap: 14px; }
+        .role-icon { width: 42px; height: 42px; background: #1e1b4b; color: #ffffff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .role-info h4 { font-size: 16px; color: #1e1b4b; font-weight: 700; margin-bottom: 2px; }
+        .role-info p { font-size: 12px; color: #64748b; }
+        .role-arrow { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #cbd5e1; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; transition: 0.2s; }
+        .role-option:hover .role-arrow { background: #4f46e5; color: #ffffff; border-color: #4f46e5; }
+        .form-header h3 { font-size: 22px; color: #1e1b4b; font-weight: 700; margin-bottom: 4px; }
+        .form-header p { font-size: 13px; color: #64748b; margin-bottom: 18px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; }
+        .btn-submit { width: 100%; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .btn-submit:hover { background: #4338ca; }
+        .error-msg { background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 8px; font-size: 13px; margin-bottom: 14px; }
     </style>
 </head>
 <body>
-
-    <div class="main-card">
-        <div class="brand-section">
-            <div class="brand-header">
-                <i class="fa-solid fa-users-rectangle"></i>
-                <div>
-                    <div class="brand-title">RetainPro</div>
-                    <span class="brand-subtitle">Listen • Improve • Retain</span>
-                </div>
+    <div class="brand-container">
+        <div class="brand-logo">
+            <i class="fa-solid fa-users-rectangle"></i>
+            <div>
+                <div class="brand-logo-text">RetainPro</div>
+                <span class="brand-logo-sub">Listen • Improve • Retain</span>
             </div>
-            
-            <h1 class="hero-title">Your Voice<br>Builds a Better<br>Workplace</h1>
-            <p class="hero-desc">Choose your access type to continue</p>
         </div>
-
-        <div class="action-panel">
-            {% if step == 'select' %}
-                <a href="/login-form?role=employee" class="role-btn">
-                    <div class="role-btn-left">
-                        <div class="role-icon"><i class="fa-solid fa-user"></i></div>
-                        <div class="role-details">
-                            <h4>Employee</h4>
-                            <p>Access your surveys, submit feedback and more</p>
-                        </div>
-                    </div>
-                    <div class="role-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                </a>
-
-                <a href="/login-form?role=hr" class="role-btn">
-                    <div class="role-btn-left">
-                        <div class="role-icon" style="background: #4f46e5;"><i class="fa-solid fa-shield-halved"></i></div>
-                        <div class="role-details">
-                            <h4>HR Manager</h4>
-                            <p>Manage data and view reports</p>
-                        </div>
-                    </div>
-                    <div class="role-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                </a>
-            {% else %}
-                <div class="form-view-header">
-                    <h3>{{ 'HR Manager Login' if role == 'hr' else 'Employee Login' }}</h3>
-                    <p>Enter your credentials to access your account</p>
-                </div>
-                
-                {% if error %}
-                    <div class="error-msg">{{ error }}</div>
-                {% endif %}
-
-                <form method="POST" action="/authenticate">
-                    <input type="hidden" name="role" value="{{ role }}">
-                    <div class="form-group">
-                        <label>Username / ID</label>
-                        <input type="text" name="username" placeholder="Enter username" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" name="password" placeholder="••••••••" required>
-                    </div>
-                    <button type="submit" class="btn-submit">Login</button>
-                </form>
-                <a href="/" style="display: block; text-align: center; font-size: 12px; color: #4f46e5; text-decoration: none; margin-top: 10px; font-weight: 600;">← Back to selection</a>
-            {% endif %}
-        </div>
+        <h1 class="hero-title">Your Voice<br>Builds a Better<br>Workplace</h1>
+        <p class="hero-desc">Choose your access type to continue</p>
     </div>
-
+    <div class="login-card">
+        {% if step == 'select' %}
+            <a href="/login-form?role=employee" class="role-option">
+                <div class="role-left">
+                    <div class="role-icon"><i class="fa-solid fa-user"></i></div>
+                    <div class="role-info">
+                        <h4>Employee</h4>
+                        <p>Access surveys, submit feedback & more</p>
+                    </div>
+                </div>
+                <div class="role-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="/login-form?role=hr" class="role-option">
+                <div class="role-left">
+                    <div class="role-icon" style="background: #4f46e5;"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="role-info">
+                        <h4>HR Manager</h4>
+                        <p>Manage data and view reports</p>
+                    </div>
+                </div>
+                <div class="role-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+        {% else %}
+            <div class="form-header">
+                <h3>{{ 'HR Manager Login' if role == 'hr' else 'Employee Login' }}</h3>
+                <p>Enter your credentials to access your account</p>
+            </div>
+            {% if error %}
+                <div class="error-msg">{{ error }}</div>
+            {% endif %}
+            <form method="POST" action="/authenticate">
+                <input type="hidden" name="role" value="{{ role }}">
+                <div class="form-group">
+                    <label>Username / ID</label>
+                    <input type="text" name="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">Login</button>
+            </form>
+            <a href="/" style="display: block; text-align: center; font-size: 13px; color: #4f46e5; text-decoration: none; margin-top: 12px; font-weight: 600;">← Back to role selection</a>
+        {% endif %}
+    </div>
 </body>
 </html>
 """
@@ -515,6 +317,30 @@ HR_HOME_CONTENT = """
 <div class="welcome-section" style="margin-bottom: 25px;">
     <h1 style="font-size: 26px; color: #1e1b4b; font-weight: 700;">Welcome back, {{ current_user.name }}! 👋</h1>
     <p style="font-size: 14px; color: #64748b; margin-top: 4px;">Manage your team data, track workflows, and build a better workplace.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
+    <div style="background: white; padding: 22px 24px; border-radius: 14px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+        <div style="width: 52px; height: 52px; border-radius: 14px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="fa-solid fa-users"></i></div>
+        <div>
+            <p style="font-size: 13px; color: #64748b; font-weight: 600; margin-bottom: 2px;">Total Employees</p>
+            <h3 style="font-size: 26px; color: #1e1b4b; font-weight: 800;">{{ total_employees }}</h3>
+        </div>
+    </div>
+    <div style="background: white; padding: 22px 24px; border-radius: 14px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+        <div style="width: 52px; height: 52px; border-radius: 14px; background: #d1fae5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="fa-solid fa-face-smile"></i></div>
+        <div>
+            <p style="font-size: 13px; color: #64748b; font-weight: 600; margin-bottom: 2px;">Satisfaction Rate</p>
+            <h3 style="font-size: 26px; color: #059669; font-weight: 800;">{{ satisfaction_rate }}%</h3>
+        </div>
+    </div>
+    <div style="background: white; padding: 22px 24px; border-radius: 14px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+        <div style="width: 52px; height: 52px; border-radius: 14px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+            <p style="font-size: 13px; color: #64748b; font-weight: 600; margin-bottom: 2px;">Turnover Risk</p>
+            <h3 style="font-size: 26px; color: #d97706; font-weight: 800;">8%</h3>
+        </div>
+    </div>
 </div>
 
 <div style="display: grid; grid-template-columns: 2.2fr 1fr; gap: 24px; align-items: start;">
@@ -527,7 +353,6 @@ HR_HOME_CONTENT = """
             <h3 style="font-size: 15px; color: #1e1b4b; font-weight: 600;">Add New Employee</h3>
             <p style="font-size: 12px; color: #64748b; margin-top: 3px;">Register staff & assign credentials</p>
         </a>
-
         <a href="/hr/employees" style="background: white; padding: 18px 20px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <div style="width: 38px; height: 38px; border-radius: 10px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-users"></i></div>
@@ -536,7 +361,6 @@ HR_HOME_CONTENT = """
             <h3 style="font-size: 15px; color: #1e1b4b; font-weight: 600;">All Employees</h3>
             <p style="font-size: 12px; color: #64748b; margin-top: 3px;">View active company staff profiles</p>
         </a>
-
         <a href="/hr/complaints" style="background: white; padding: 18px 20px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <div style="width: 38px; height: 38px; border-radius: 10px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-triangle-exclamation"></i></div>
@@ -545,7 +369,6 @@ HR_HOME_CONTENT = """
             <h3 style="font-size: 15px; color: #1e1b4b; font-weight: 600;">Employee Complaints</h3>
             <p style="font-size: 12px; color: #64748b; margin-top: 3px;">Review and resolve staff issues</p>
         </a>
-
         <a href="/hr/surveys" style="background: white; padding: 18px 20px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <div style="width: 38px; height: 38px; border-radius: 10px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-square-poll-vertical"></i></div>
@@ -554,7 +377,6 @@ HR_HOME_CONTENT = """
             <h3 style="font-size: 15px; color: #1e1b4b; font-weight: 600;">Employee Surveys</h3>
             <p style="font-size: 12px; color: #64748b; margin-top: 3px;">Analyze workplace satisfaction</p>
         </a>
-
         <a href="/hr/questions" style="background: white; padding: 18px 20px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <div style="width: 38px; height: 38px; border-radius: 10px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-comments"></i></div>
@@ -563,7 +385,6 @@ HR_HOME_CONTENT = """
             <h3 style="font-size: 15px; color: #1e1b4b; font-weight: 600;">Employee Questions</h3>
             <p style="font-size: 12px; color: #64748b; margin-top: 3px;">Answer inquiries & support tickets</p>
         </a>
-
         <a href="/hr/talents" style="background: white; padding: 18px 20px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <div style="width: 38px; height: 38px; border-radius: 10px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-bullseye"></i></div>
@@ -585,11 +406,9 @@ HR_HOME_CONTENT = """
 PROFILE_CONTENT = """
 <div class="page-card">
     <h2 style="color: #1e1b4b; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-user-gear"></i> Profile Settings</h2>
-    
     {% if msg %}
     <p style="color: #10b981; font-size: 13px; margin-bottom: 20px; font-weight: 600;">{{ msg }}</p>
     {% endif %}
-
     <form method="POST" enctype="multipart/form-data">
         <div style="text-align: center; margin-bottom: 25px;">
             {% if current_user.avatar %}
@@ -598,7 +417,6 @@ PROFILE_CONTENT = """
                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #4f46e5;">
             {% endif %}
         </div>
-
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div>
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Full Name</label>
@@ -609,12 +427,10 @@ PROFILE_CONTENT = """
                 <input type="password" name="password" placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
             </div>
         </div>
-
         <div style="margin-bottom: 25px;">
             <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Upload New Profile Picture (from computer)</label>
             <input type="file" name="avatar_file" accept="image/*" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; font-size: 14px;">
         </div>
-
         <button type="submit" class="btn-primary" style="width: 100%;">Save Changes</button>
     </form>
 </div>
@@ -624,7 +440,6 @@ ADD_EMPLOYEE_CONTENT = """
 <div class="page-card">
     <h2 style="color: #1e1b4b; margin-bottom: 25px;"><i class="fa-solid fa-user-plus"></i> Add New Employee</h2>
     {% if msg %}<p style="color: green; font-size: 13px; margin-bottom: 15px; font-weight: 600;">{{ msg }}</p>{% endif %}
-    
     <form method="POST" enctype="multipart/form-data">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div>
@@ -636,7 +451,6 @@ ADD_EMPLOYEE_CONTENT = """
                 <input type="date" name="dob" required style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
             </div>
         </div>
-
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div>
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">National ID Number</label>
@@ -647,7 +461,6 @@ ADD_EMPLOYEE_CONTENT = """
                 <input type="text" name="bank_account" required placeholder="e.g. RIB 00123456789" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
             </div>
         </div>
-
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div>
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Username / ID</label>
@@ -658,7 +471,6 @@ ADD_EMPLOYEE_CONTENT = """
                 <input type="password" name="password" required placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
             </div>
         </div>
-
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
             <div>
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Job Position</label>
@@ -669,7 +481,6 @@ ADD_EMPLOYEE_CONTENT = """
                 <input type="file" name="avatar_file" accept="image/*" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; font-size: 14px;">
             </div>
         </div>
-
         <button type="submit" class="btn-primary" style="width: 100%;">Register Employee</button>
     </form>
 </div>
@@ -717,7 +528,6 @@ HR_REQUESTS_LIST_CONTENT = """
 <div class="page-card">
     <h2 style="color: #1e1b4b; margin-bottom: 15px;">Management Section: {{ path }}</h2>
     <p style="color: #475569; margin-bottom: 20px;">Review all submitted records and requests from employees.</p>
-    
     {% if requests_list %}
     <table style="width: 100%; border-collapse: collapse;">
         <thead>
@@ -750,7 +560,6 @@ EMPLOYEE_HOME_CONTENT = """
     <h1 style="font-size: 26px; color: #1e1b4b; font-weight: 700;">Welcome back, {{ current_user.name }}! 👋</h1>
     <p style="font-size: 14px; color: #64748b; margin-top: 4px;">Access all employee features, update profile info, and communicate with HR.</p>
 </div>
-
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 900px;">
     <a href="/employee/profile" style="background: white; padding: 22px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
@@ -760,7 +569,6 @@ EMPLOYEE_HOME_CONTENT = """
         <h3 style="font-size: 16px; color: #1e1b4b; font-weight: 600; margin-bottom: 4px;">My Profile & Info</h3>
         <p style="font-size: 13px; color: #64748b;">View personal details, bank info, and update photo/password.</p>
     </a>
-
     <a href="/employee/complaint" style="background: white; padding: 22px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
             <div style="width: 42px; height: 42px; border-radius: 10px; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; font-size: 18px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
@@ -769,7 +577,6 @@ EMPLOYEE_HOME_CONTENT = """
         <h3 style="font-size: 16px; color: #1e1b4b; font-weight: 600; margin-bottom: 4px;">Submit Complaint</h3>
         <p style="font-size: 13px; color: #64748b;">Report issues or voice concerns directly to management.</p>
     </a>
-
     <a href="/employee/surveys" style="background: white; padding: 22px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
             <div style="width: 42px; height: 42px; border-radius: 10px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: 18px;"><i class="fa-solid fa-square-poll-vertical"></i></div>
@@ -778,7 +585,6 @@ EMPLOYEE_HOME_CONTENT = """
         <h3 style="font-size: 16px; color: #1e1b4b; font-weight: 600; margin-bottom: 4px;">Surveys & Feedback</h3>
         <p style="font-size: 13px; color: #64748b;">Take active company surveys and rate workplace environment.</p>
     </a>
-
     <a href="/employee/ask-hr" style="background: white; padding: 22px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
             <div style="width: 42px; height: 42px; border-radius: 10px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: 18px;"><i class="fa-solid fa-comments"></i></div>
@@ -787,7 +593,6 @@ EMPLOYEE_HOME_CONTENT = """
         <h3 style="font-size: 16px; color: #1e1b4b; font-weight: 600; margin-bottom: 4px;">Ask HR Manager</h3>
         <p style="font-size: 13px; color: #64748b;">Send direct questions or inquiries regarding policies & work.</p>
     </a>
-
     <a href="/employee/talents" style="background: white; padding: 22px; border-radius: 14px; border: 1px solid #e2e8f0; text-decoration: none; transition: 0.2s; grid-column: span 2;" onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0'">
         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
             <div style="width: 42px; height: 42px; border-radius: 10px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: 18px;"><i class="fa-solid fa-graduation-cap"></i></div>
@@ -802,11 +607,9 @@ EMPLOYEE_HOME_CONTENT = """
 EMPLOYEE_PROFILE_CONTENT = """
 <div class="page-card" style="max-width: 750px;">
     <h2 style="color: #1e1b4b; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-id-card"></i> My Personal & Professional Info</h2>
-    
     {% if msg %}
     <p style="color: #10b981; font-size: 13px; margin-bottom: 20px; font-weight: 600;">{{ msg }}</p>
     {% endif %}
-
     <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
         {% if current_user.avatar %}
             <img src="{{ current_user.avatar }}" alt="Avatar" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #4f46e5;">
@@ -819,7 +622,6 @@ EMPLOYEE_PROFILE_CONTENT = """
             <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Username ID: <strong>{{ current_user.username }}</strong></p>
         </div>
     </div>
-
     <form method="POST" enctype="multipart/form-data">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div>
@@ -831,16 +633,12 @@ EMPLOYEE_PROFILE_CONTENT = """
                 <input type="text" value="{{ current_user.national_id }}" disabled style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f1f5f9; color: #64748b;">
             </div>
         </div>
-
         <div style="margin-bottom: 20px;">
             <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Bank Account Number</label>
             <input type="text" value="{{ current_user.bank_account }}" disabled style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f1f5f9; color: #64748b;">
         </div>
-
         <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 25px 0;">
-
         <h3 style="font-size: 16px; color: #1e1b4b; font-weight: 600; margin-bottom: 15px;">Update Profile Settings</h3>
-
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div>
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Full Name</label>
@@ -851,12 +649,10 @@ EMPLOYEE_PROFILE_CONTENT = """
                 <input type="password" name="password" placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
             </div>
         </div>
-
         <div style="margin-bottom: 25px;">
             <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Upload Profile Picture</label>
             <input type="file" name="avatar_file" accept="image/*" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; font-size: 14px;">
         </div>
-
         <button type="submit" class="btn-primary" style="width: 100%;">Save Changes</button>
     </form>
 </div>
@@ -866,22 +662,18 @@ EMPLOYEE_COMPLAINT_CONTENT = """
 <div class="page-card" style="max-width: 650px;">
     <h2 style="color: #1e1b4b; margin-bottom: 15px;"><i class="fa-solid fa-triangle-exclamation"></i> Submit a Complaint</h2>
     <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">Submit any workplace issue or grievance confidentially to HR management.</p>
-    
     {% if msg %}
     <p style="color: #10b981; font-size: 13px; margin-bottom: 15px; font-weight: 600;">{{ msg }}</p>
     {% endif %}
-
     <form method="POST">
         <div style="margin-bottom: 20px;">
             <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Complaint Subject</label>
             <input type="text" name="subject" required placeholder="e.g. Workplace Condition / Team Issue" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
         </div>
-
         <div style="margin-bottom: 25px;">
             <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Detailed Explanation</label>
             <textarea name="message" rows="5" required placeholder="Describe the details of your complaint..." style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
         </div>
-
         <button type="submit" class="btn-primary" style="width: 100%;">Submit Complaint</button>
     </form>
 </div>
@@ -890,26 +682,51 @@ EMPLOYEE_COMPLAINT_CONTENT = """
 EMPLOYEE_SURVEY_CONTENT = """
 <div class="page-card" style="max-width: 700px;">
     <h2 style="color: #1e1b4b; margin-bottom: 15px;"><i class="fa-solid fa-square-poll-vertical"></i> Employee Satisfaction Survey</h2>
-    <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">Please take a moment to answer these questions to help us improve workplace satisfaction.</p>
+    <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">Please rate your workplace environment and provide your feedback.</p>
     
     {% if msg %}
     <p style="color: #10b981; font-size: 13px; margin-bottom: 15px; font-weight: 600;">{{ msg }}</p>
     {% endif %}
 
+    <style>
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 32px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f59e0b;
+        }
+    </style>
+
     <form method="POST">
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 8px;">1. How satisfied are you with your current work environment?</label>
-            <select name="q1" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
-                <option>Very Satisfied</option>
-                <option>Satisfied</option>
-                <option>Neutral</option>
-                <option>Dissatisfied</option>
-            </select>
+        <div style="margin-bottom: 22px;">
+            <label style="display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 10px;">1. How satisfied are you with your current work environment?</label>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5" required><label for="star5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star"><i class="fa-solid fa-star"></i></label>
+            </div>
         </div>
 
         <div style="margin-bottom: 25px;">
             <label style="display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 8px;">2. Any suggestions for improving company communication and culture?</label>
-            <textarea name="q2" rows="4" required placeholder="Your feedback..." style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
+            <textarea name="feedback" rows="4" required placeholder="Your feedback..." style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
         </div>
 
         <button type="submit" class="btn-primary" style="width: 100%;">Submit Survey Response</button>
@@ -921,22 +738,18 @@ EMPLOYEE_ASK_HR_CONTENT = """
 <div class="page-card" style="max-width: 650px;">
     <h2 style="color: #1e1b4b; margin-bottom: 15px;"><i class="fa-solid fa-comments"></i> Ask HR Manager</h2>
     <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">Have a question about leave days, payroll, or company policy? Ask HR directly.</p>
-    
     {% if msg %}
     <p style="color: #10b981; font-size: 13px; margin-bottom: 15px; font-weight: 600;">{{ msg }}</p>
     {% endif %}
-
     <form method="POST">
         <div style="margin-bottom: 20px;">
             <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Question Topic</label>
             <input type="text" name="topic" required placeholder="e.g. Annual Leave Request / Payslip clarification" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;">
         </div>
-
         <div style="margin-bottom: 25px;">
             <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Your Question</label>
             <textarea name="question" rows="5" required placeholder="Type your question for HR..." style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
         </div>
-
         <button type="submit" class="btn-primary" style="width: 100%;">Send Question to HR</button>
     </form>
 </div>
@@ -946,11 +759,9 @@ EMPLOYEE_TALENT_CONTENT = """
 <div class="page-card" style="max-width: 650px;">
     <h2 style="color: #1e1b4b; margin-bottom: 15px;"><i class="fa-solid fa-graduation-cap"></i> Talent & Internship Request</h2>
     <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">Request training programs, skill certifications, or request an intern for your department.</p>
-    
     {% if msg %}
     <p style="color: #10b981; font-size: 13px; margin-bottom: 15px; font-weight: 600;">{{ msg }}</p>
     {% endif %}
-
     <form method="POST">
         <div style="margin-bottom: 20px;">
             <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Request Type</label>
@@ -961,12 +772,10 @@ EMPLOYEE_TALENT_CONTENT = """
                 <option>Workshop / Webinar Proposal</option>
             </select>
         </div>
-
         <div style="margin-bottom: 25px;">
             <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Proposal / Justification Details</label>
             <textarea name="details" rows="5" required placeholder="Describe the course, training, or internship request details..." style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
         </div>
-
         <button type="submit" class="btn-primary" style="width: 100%;">Submit Request</button>
     </form>
 </div>
@@ -1029,8 +838,32 @@ def authenticate():
 def hr_dashboard():
   if session.get("role") != "hr":
     return redirect(url_for("home"))
+
+  total_employees = User.query.filter_by(role="employee").count()
+
+  surveys = RequestItem.query.filter_by(category="survey").all()
+  if surveys:
+    total_score = 0
+    for s in surveys:
+      try:
+        parts = s.details.split("|")
+        rating_part = [p for p in parts if "Rating" in p][0]
+        stars = int(rating_part.split(":")[1].strip().split(" ")[0])
+        total_score += stars
+      except:
+        total_score += 4
+    avg_stars = total_score / len(surveys)
+    satisfaction_rate = int((avg_stars / 5) * 100)
+  else:
+    satisfaction_rate = 85
+
   return render_page(
-      HR_HOME_CONTENT, title="HR Dashboard", active_page="home", is_hr=True
+      HR_HOME_CONTENT,
+      title="HR Dashboard",
+      active_page="home",
+      is_hr=True,
+      total_employees=total_employees,
+      satisfaction_rate=satisfaction_rate,
   )
 
 
@@ -1273,9 +1106,9 @@ def employee_surveys():
     return redirect(url_for("home"))
   msg = None
   if request.method == "POST":
-    q1 = request.form.get("q1")
-    q2 = request.form.get("q2")
-    details = f"Satisfaction Level: {q1} | Feedback: {q2}"
+    rating = request.form.get("rating")
+    feedback = request.form.get("feedback")
+    details = f"Rating: {rating} Stars | Feedback: {feedback}"
     new_req = RequestItem(
         category="survey",
         employee_name=session.get("name"),
